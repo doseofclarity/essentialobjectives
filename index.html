@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Puerperium Nursing Care | Postpartum Objectives | Adele Pillitteri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        .transition-all { transition: all 0.3s ease; }
+        .recall-mode .reveal-text {
+            background-color: #cbd5e1;
+            color: transparent;
+            border-radius: 0.375rem;
+            padding: 0 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            box-shadow: inset 0 0 0 1px #94a3b8;
+        }
+        .recall-mode .reveal-text:hover,
+        .recall-mode .reveal-text.revealed {
+            background-color: #c7d2fe;
+            color: #1e293b;
+            box-shadow: none;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 8px; }
+        .content-section { animation: fade 0.3s ease; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .quiz-feedback-correct { background-color: #dcfce7; border-left: 4px solid #22c55e; }
+        .quiz-feedback-wrong { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .locked-section { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { puerperium: { light: '#e0e7ff', DEFAULT: '#4f46e5', dark: '#3730a3' } } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 h-screen flex flex-col md:flex-row font-sans text-slate-800 overflow-hidden">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden bg-puerperium-dark text-white p-4 flex justify-between items-center shadow-md z-30 shrink-0">
+        <button onclick="toggleMobileMenu()" class="text-white focus:outline-none z-40">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
+        <h1 class="font-bold text-lg absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
+            <i class="fa-solid fa-hand-holding-heart mr-2"></i> Puerperium Care
+        </h1>
+        <div class="w-8"></div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="hidden md:flex flex-col w-full md:w-80 bg-white shadow-2xl h-full absolute md:relative z-30 transition-transform duration-300 shrink-0 border-r border-slate-200">
+        <div class="p-6 bg-gradient-to-br from-puerperium-dark to-puerperium text-white hidden md:block shrink-0">
+            <h1 class="font-black text-2xl tracking-wide"><i class="fa-solid fa-clinic-medical mr-2"></i> Puerperium Care</h1>
+            <p class="text-sm text-indigo-200 mt-1 font-medium">Essential Nursing Objectives | Pillitteri 7e</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 text-sm font-medium">
+                <li><button onclick="showSection('home')" id="btn-home" class="nav-btn w-full text-left px-6 py-3 bg-puerperium-light text-puerperium-dark border-r-4 border-puerperium-dark transition-colors"><i class="fa-solid fa-house w-6 nav-icon"></i><i class="fa-solid fa-lock w-6 hidden"></i> Home / Start</button></li>
+                <li><button onclick="showSection('overview')" id="btn-overview" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-bullseye w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Overview: 7 Essential Objectives</button></li>
+                <li><button onclick="showSection('fundal')" id="btn-fundal" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-hand-holding-heart w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 1. Prevent Hemorrhage (Uterine Tone)</button></li>
+                <li><button onclick="showSection('bladder')" id="btn-bladder" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-toilet w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 2. Promote Bladder & Bowel Function</button></li>
+                <li><button onclick="showSection('infection')" id="btn-infection" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-virus w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 3. Prevent Infection (Perineal & Uterine)</button></li>
+                <li><button onclick="showSection('comfort')" id="btn-comfort" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-spa w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 4. Promote Comfort & Pain Relief</button></li>
+                <li><button onclick="showSection('breastfeeding')" id="btn-breastfeeding" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-baby w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 5. Support Breastfeeding</button></li>
+                <li><button onclick="showSection('emotional')" id="btn-emotional" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-heart w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 6. Emotional & Psychological Support</button></li>
+                <li><button onclick="showSection('discharge')" id="btn-discharge" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-door-open w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> 7. Discharge Teaching & Family Integration</button></li>
+                <li><button onclick="showSection('mnemonics')" id="btn-mnemonics" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-200 mt-2 locked-section"><i class="fa-solid fa-brain w-6 text-puerperium nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Mnemonics & Summary Table</button></li>
+                <li><button onclick="showSection('final_quiz_sec')" id="btn-final_quiz_sec" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-graduation-cap w-6 text-amber-500 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Final 50‑Item Exam</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="flex-1 h-full overflow-y-auto bg-slate-100 relative w-full">
+        <div class="fixed top-16 md:top-4 right-4 md:right-8 z-40 flex items-center bg-white/90 backdrop-blur px-4 py-3 rounded-full shadow-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors" onclick="toggleRecallMode()">
+            <span class="mr-3 text-sm font-bold text-slate-700 hidden md:inline"><i class="fa-solid fa-brain text-puerperium mr-1"></i> Active Recall</span>
+            <button id="recall-toggle" class="w-12 h-6 bg-slate-300 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner pointer-events-none">
+                <div id="recall-knob" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-300 shadow"></div>
+            </button>
+        </div>
+
+        <div class="p-4 md:p-8 max-w-6xl mx-auto pb-32">
+            <!-- HOME SECTION -->
+            <section id="home" class="content-section flex flex-col items-center justify-center min-h-[80vh] text-center block">
+                <div class="bg-gradient-to-br from-slate-800 to-puerperium-dark text-white rounded-3xl shadow-2xl p-10 md:p-16 w-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 text-white opacity-5 pointer-events-none"><i class="fa-solid fa-people-carry-box text-[20rem]"></i></div>
+                    <div class="relative z-10">
+                        <div class="bg-white/10 backdrop-blur-sm inline-block p-4 rounded-full text-indigo-300 mb-6 shadow-sm border border-white/20">
+                            <i class="fa-solid fa-bullhorn text-5xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-300 mb-2 uppercase tracking-widest">Maternal & Child Health Nursing</h3>
+                        <h1 class="text-4xl md:text-6xl font-black text-white mb-6 leading-tight drop-shadow-md">Essential Objectives of<br>Nursing Care in the Puerperium</h1>
+                        <div class="bg-white/10 backdrop-blur inline-block px-6 py-3 rounded-full mb-10 border border-white/20">
+                            <p class="text-lg text-white font-medium">Postpartum Recovery | <strong class="font-black">Adele Pillitteri, 7e</strong></p>
+                        </div>
+                        <button onclick="unlockFirstSection()" class="bg-slate-600 hover:bg-slate-500 text-white font-black py-4 px-10 rounded-full shadow-xl transition-transform hover:scale-105 text-lg flex items-center mx-auto focus:outline-none">
+                            Begin Module <i class="fa-solid fa-arrow-right ml-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. OVERVIEW: 7 ESSENTIAL OBJECTIVES -->
+            <section id="overview" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-bullseye text-puerperium mr-4"></i> Overview: 7 Essential Objectives of Puerperal Nursing</h2>
+                    <p class="mb-4">Based on Pillitteri, the puerperium (first 6 weeks after childbirth) requires focused nursing care to promote physical recovery, prevent complications, and support family adaptation. The 7 essential objectives are:</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>1️⃣ Prevent Hemorrhage</strong><br><span class="reveal-text">Maintain uterine tone via fundal massage and oxytocics; monitor lochia.</span></div>
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>2️⃣ Promote Bladder/Bowel Function</strong><br><span class="reveal-text">Prevent urinary retention and constipation; encourage fluids/fiber.</span></div>
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>3️⃣ Prevent Infection</strong><br><span class="reveal-text">Perineal care, hand hygiene, monitor vital signs and lochia odor.</span></div>
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>4️⃣ Promote Comfort & Pain Relief</strong><br><span class="reveal-text">Manage afterpains, perineal discomfort, breast engorgement.</span></div>
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>5️⃣ Support Breastfeeding</strong><br><span class="reveal-text">Latch assistance, milk production, mastitis prevention.</span></div>
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>6️⃣ Emotional & Psychological Support</strong><br><span class="reveal-text">Identify baby blues, PPD, psychosis; provide reassurance and referral.</span></div>
+                        <div class="bg-indigo-50 p-3 rounded-xl"><strong>7️⃣ Discharge Teaching & Family Integration</strong><br><span class="reveal-text">Newborn care, postpartum warning signs, contraception, follow‑up.</span></div>
+                    </div>
+                    <div class="bg-puerperium-light mt-4 p-3 rounded-lg"><i class="fa-regular fa-lightbulb"></i> <strong>Pillitteri emphasis:</strong> These objectives are interrelated; achieving them ensures optimal maternal–infant outcomes.</div>
+                    <button onclick="openQuiz('overview')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 2. PREVENT HEMORRHAGE (UTERINE TONE) -->
+            <section id="fundal" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-hand-holding-heart text-puerperium mr-4"></i> 1. Prevent Hemorrhage (Uterine Tone)</h2>
+                    <p><strong>Goal:</strong> Maintain uterine contraction and prevent excessive blood loss.</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li><strong>Fundal assessment:</strong> <span class="reveal-text">Check position, firmness (should be midline and firm like a grapefruit). If boggy → massage gently until firm.</span></li>
+                        <li><strong>Lochia monitoring:</strong> <span class="reveal-text">Rubra (1–3 days), Serosa (4–10 days), Alba (11 days–6 weeks). Abnormal: >1 pad/hour, large clots, foul odor.</span></li>
+                        <li><strong>Vital signs:</strong> <span class="reveal-text">Tachycardia and hypotension suggest hypovolemia.</span></li>
+                        <li><strong>Bladder care:</strong> <span class="reveal-text">Empty bladder every 2–4 hours; distension prevents contraction.</span></li>
+                        <li><strong>Medications:</strong> <span class="reveal-text">Oxytocin (Pitocin), methylergonovine (Methergine), carboprost (Hemabate), misoprostol.</span></li>
+                    </ul>
+                    <div class="bg-red-50 p-3 rounded-lg mt-4"><strong>⚠️ Warning signs:</strong> <span class="reveal-text">Heavy bleeding, uterine atony, large clots, dizziness → notify provider immediately.</span></div>
+                    <button onclick="openQuiz('fundal')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 3. PROMOTE BLADDER & BOWEL FUNCTION -->
+            <section id="bladder" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-toilet text-puerperium mr-4"></i> 2. Promote Bladder & Bowel Function</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Bladder:</strong> <span class="reveal-text">Void within 6–8 hours after delivery. Assess for distension (palpable bladder above fundus). Diuresis occurs 2–5 days postpartum.</span></li>
+                        <li><strong>Interventions:</strong> <span class="reveal-text">Encourage fluids, assist to bathroom, run water, use warm perineal irrigation. Catheterize if unable to void.</span></li>
+                        <li><strong>Bowel:</strong> <span class="reveal-text">First bowel movement usually 2–3 days postpartum. Prevent constipation: high‑fiber diet, stool softeners (docusate), hydration, ambulation.</span></li>
+                        <li><strong>Episiotomy care:</strong> <span class="reveal-text">Stool softeners reduce pain. Avoid straining and enemas.</span></li>
+                    </ul>
+                    <div class="bg-blue-50 p-3 rounded-lg mt-4"><i class="fa-regular fa-clock"></i> <strong>Pillitteri note:</strong> Full bladder can displace the fundus and cause atony → hemorrhage. Frequent voiding is essential.</div>
+                    <button onclick="openQuiz('bladder')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 4. PREVENT INFECTION -->
+            <section id="infection" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-virus text-puerperium mr-4"></i> 3. Prevent Infection (Perineal & Uterine)</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Perineal care:</strong> <span class="reveal-text">Wipe front to back, change perineal pads every 2–4 hours, use peri‑bottle with warm water after voiding.</span></li>
+                        <li><strong>Endometritis prevention:</strong> <span class="reveal-text">Monitor lochia for foul odor, uterine tenderness, fever >100.4°F (38°C).</span></li>
+                        <li><strong>Hand hygiene:</strong> <span class="reveal-text">Strict handwashing before and after perineal care.</span></li>
+                        <li><strong>Wound care:</strong> <span class="reveal-text">Episiotomy or C‑section incision – assess for redness, edema, ecchymosis, discharge, approximation (REEDA).</span></li>
+                    </ul>
+                    <div class="bg-amber-50 p-3 rounded-lg mt-4"><strong>🩺 Fever workup:</strong> <span class="reveal-text">Rule out endometritis, UTI, mastitis, wound infection, thrombophlebitis.</span></div>
+                    <button onclick="openQuiz('infection')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 5. PROMOTE COMFORT & PAIN RELIEF -->
+            <section id="comfort" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-spa text-puerperium mr-4"></i> 4. Promote Comfort & Pain Relief</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Afterpains:</strong> <span class="reveal-text">More common in multiparas and with breastfeeding. Mild analgesics (ibuprofen), positioning, relaxation techniques.</span></li>
+                        <li><strong>Perineal discomfort:</strong> <span class="reveal-text">Ice packs (first 24 hours), sitz baths (after 24 hours), topical anesthetics (witch hazel pads), NSAIDs.</span></li>
+                        <li><strong>Breast engorgement:</strong> <span class="reveal-text">Frequent feeding, warm compresses before feeding, cold packs after feeding, cabbage leaves (controversial but traditional).</span></li>
+                        <li><strong>Episiotomy/C‑section pain:</strong> <span class="reveal-text">Oral analgesics (acetaminophen, ibuprofen); for C‑section: early ambulation, incentive spirometry.</span></li>
+                    </ul>
+                    <button onclick="openQuiz('comfort')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 6. SUPPORT BREASTFEEDING -->
+            <section id="breastfeeding" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-baby text-puerperium mr-4"></i> 5. Support Breastfeeding</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Initiation:</strong> <span class="reveal-text">First feeding within 1 hour after birth (skin‑to‑skin).</span></li>
+                        <li><strong>Latch assessment:</strong> <span class="reveal-text">Wide mouth, flanged lips, areola visible above, pain‑free nursing.</span></li>
+                        <li><strong>Frequency:</strong> <span class="reveal-text">8–12 feedings in 24 hours, on demand (every 2–3 hours).</span></li>
+                        <li><strong>Signs of adequate intake:</strong> <span class="reveal-text">6–8 wet diapers/day, 3–4 stools/day (after day 3), steady weight gain, contentment after feeds.</span></li>
+                        <li><strong>Common problems:</strong> <span class="reveal-text">Sore nipples (improve latch), engorgement (feed frequently), mastitis (continue feeding, antibiotics).</span></li>
+                        <li><strong>Contraindications:</strong> <span class="reveal-text">HIV, active untreated TB, maternal chemotherapy, galactosemia in infant.</span></li>
+                    </ul>
+                    <div class="bg-puerperium-light p-3 rounded-lg mt-4"><i class="fa-regular fa-heart"></i> <strong>Pillitteri:</strong> Support from nurses significantly increases breastfeeding duration and success.</div>
+                    <button onclick="openQuiz('breastfeeding')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 7. EMOTIONAL & PSYCHOLOGICAL SUPPORT -->
+            <section id="emotional" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-heart text-puerperium mr-4"></i> 6. Emotional & Psychological Support</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Assess mood:</strong> <span class="reveal-text">Use Edinburgh Postnatal Depression Scale (EPDS).</span></li>
+                        <li><strong>Baby blues:</strong> <span class="reveal-text">Reassurance, rest, support; resolves in 2 weeks.</span></li>
+                        <li><strong>PPD:</strong> <span class="reveal-text">Persistent sadness, anhedonia, guilt → refer for counseling/medication.</span></li>
+                        <li><strong>Postpartum psychosis:</strong> <span class="reveal-text">Delusions, hallucinations, risk of infanticide → immediate psychiatric hospitalization.</span></li>
+                        <li><strong>Partner involvement:</strong> <span class="reveal-text">Include partner in education and care; assess for paternal depression.</span></li>
+                    </ul>
+                    <div class="bg-rose-50 p-3 rounded-lg mt-4"><strong>🚨 Emergency signs:</strong> <span class="reveal-text">Suicidal/homicidal ideation, command hallucinations, disorganized behavior → 1:1 observation, notify psychiatry.</span></div>
+                    <button onclick="openQuiz('emotional')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 8. DISCHARGE TEACHING & FAMILY INTEGRATION -->
+            <section id="discharge" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-door-open text-puerperium mr-4"></i> 7. Discharge Teaching & Family Integration</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Postpartum warning signs (call provider):</strong> <span class="reveal-text">Fever >100.4°F, foul lochia, severe headache, vision changes, chest pain, calf pain, bleeding >1 pad/hour.</span></li>
+                        <li><strong>Perineal care at home:</strong> <span class="reveal-text">Continue peri‑bottle, sitz baths, pad changes q4h, avoid tampons, douching, intercourse (6 weeks).</span></li>
+                        <li><strong>Contraception:</strong> <span class="reveal-text">Ovulation can occur as early as 3 weeks (non‑lactating) or 6 months (lactating). Discuss LARC, condoms, mini‑pill.</span></li>
+                        <li><strong>Newborn care:</strong> <span class="reveal-text">Safe sleep (back to sleep), feeding cues, cord care, follow‑up appointments.</span></li>
+                        <li><strong>Family integration:</strong> <span class="reveal-text">Support sibling adjustment, encourage partner involvement, identify community resources.</span></li>
+                    </ul>
+                    <div class="bg-green-50 p-3 rounded-lg mt-4"><i class="fa-regular fa-calendar"></i> <strong>Follow‑up:</strong> <span class="reveal-text">Postpartum visit at 2–3 weeks (high‑risk) or 6 weeks (routine).</span></div>
+                    <button onclick="openQuiz('discharge')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 9. MNEMONICS & SUMMARY -->
+            <section id="mnemonics" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-puerperium pb-3"><i class="fa-solid fa-brain text-puerperium mr-4"></i> Mnemonics & Summary Table</h2>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="bg-indigo-50 p-4 rounded-xl"><strong class="text-indigo-800">📌 "BUBBLE-HE" – Postpartum Assessment</strong><br><span class="reveal-text">Breasts, Uterus, Bladder, Bowels, Lochia, Episiotomy, Homan's sign (for DVT), Emotions.</span></div>
+                        <div class="bg-indigo-50 p-4 rounded-xl"><strong class="text-indigo-800">🩸 "Tone, Tissue, Trauma, Thrombin" (4 T's of PPH)</strong><br><span class="reveal-text">Prevention: fundal massage, oxytocin, inspect placenta, avoid lacerations, correct coagulopathy.</span></div>
+                        <div class="bg-indigo-50 p-4 rounded-xl"><strong class="text-indigo-800">🚨 REEDA – Perineal assessment</strong><br><span class="reveal-text">Redness, Edema, Ecchymosis, Discharge, Approximation.</span></div>
+                        <div class="bg-indigo-50 p-4 rounded-xl"><strong class="text-indigo-800">🍼 Breastfeeding: "C.H.O.S.E."</strong><br><span class="reveal-text">C – Comfortable positioning, H – Head alignment, O – Open mouth, S – Suckling, E – Effective swallowing.</span></div>
+                        <div class="bg-indigo-50 p-4 rounded-xl"><strong class="text-indigo-800">📋 Discharge Mnemonic "P.A.S.S."</strong><br><span class="reveal-text">P – Postpartum warning signs, A – Activity (rest, avoid heavy lifting), S – Sexual activity (wait 6 weeks), S – Support resources.</span></div>
+                        <div class="bg-indigo-50 p-4 rounded-xl"><strong class="text-indigo-800">🎯 7 Objectives in sequence</strong><br><span class="reveal-text">Bleeding → Bladder → Infection → Comfort → Breastfeeding → Emotions → Discharge.</span></div>
+                    </div>
+                    <button onclick="openQuiz('mnemonics')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Final Exam</button>
+                </div>
+            </section>
+
+            <!-- FINAL EXAM SECTION -->
+            <section id="final_quiz_sec" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 text-center min-h-[60vh] flex flex-col justify-center items-center">
+                    <i class="fa-solid fa-graduation-cap text-8xl text-amber-500 mb-6"></i>
+                    <h2 class="text-4xl font-black text-slate-800 mb-4">Final 50‑Item Exam</h2>
+                    <p class="text-lg text-slate-600 mb-8 max-w-2xl">Covers all 7 essential objectives, assessment, interventions, mnemonics, and clinical application. Score ≥75% to pass.</p>
+                    <button onclick="openQuiz('final_quiz')" class="w-full max-w-md bg-slate-800 text-white font-black py-4 rounded-xl shadow-md text-xl">Start Final Exam</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- QUIZ MODAL -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeQuiz()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h2 id="quiz-title" class="text-3xl font-black text-slate-800 mb-2"></h2>
+            <div id="quiz-questions-container" class="space-y-4 mt-4"></div>
+            <button id="quiz-submit-btn" onclick="submitQuiz()" class="mt-8 w-full bg-puerperium text-white font-bold py-4 rounded-xl shadow-lg">Submit Answers</button>
+            <div id="quiz-result-container" class="hidden mt-6 p-4 rounded-xl bg-slate-100"></div>
+        </div>
+    </div>
+
+    <script>
+        let unlockedSections = ['home'];
+        // QUIZZES (10 questions each)
+        const quizzes = {
+            overview: { title: "Overview: 7 Essential Objectives", next: "fundal", questions: [
+                { q: "How many essential objectives of puerperal nursing care does Pillitteri outline?", options: ["5", "6", "7", "8"], ans: 2 },
+                { q: "Which objective directly addresses uterine atony and hemorrhage?", options: ["Prevent infection", "Prevent hemorrhage (uterine tone)", "Support breastfeeding", "Discharge teaching"], ans: 1 },
+                { q: "Which of the following is NOT one of the 7 objectives?", options: ["Prevent infection", "Promote bladder/bowel function", "Perform cesarean section", "Emotional support"], ans: 2 },
+                { q: "The objective 'Promote comfort & pain relief' includes management of:", options: ["Afterpains, perineal pain, engorgement", "Fundal height only", "Lochia color", "Newborn weight"], ans: 0 },
+                { q: "Postpartum warning signs teaching falls under which objective?", options: ["Prevent hemorrhage", "Discharge teaching & family integration", "Support breastfeeding", "Emotional support"], ans: 1 },
+                { q: "Assessing lochia for color, amount, and odor is part of which objective?", options: ["Promote bladder/bowel", "Prevent infection", "Prevent hemorrhage", "Both B and C"], ans: 3 },
+                { q: "Which objective includes screening with EPDS?", options: ["Promote comfort", "Emotional & psychological support", "Discharge teaching", "Support breastfeeding"], ans: 1 },
+                { q: "The puerperium is defined as:", options: ["First 24 hours after birth", "First 6 weeks after childbirth", "First 3 months after birth", "Duration of labor"], ans: 1 },
+                { q: "Encouraging frequent voiding is primarily which objective?", options: ["Prevent hemorrhage", "Promote bladder/bowel function", "Prevent infection", "Discharge teaching"], ans: 1 },
+                { q: "Which objective includes teaching about perineal hygiene and sitz baths?", options: ["Prevent infection", "Promote comfort", "Both A and B", "None"], ans: 2 }
+            ]},
+            fundal: { title: "Prevent Hemorrhage (Uterine Tone)", next: "bladder", questions: [
+                { q: "A boggy uterus displaced to the right suggests:", options: ["Normal involution", "Full bladder", "Uterine rupture", "Endometritis"], ans: 1 },
+                { q: "Normal lochia progression is:", options: ["Rubra → Serosa → Alba", "Alba → Rubra → Serosa", "Serosa → Rubra → Alba", "Rubra → Alba → Serosa"], ans: 0 },
+                { q: "The nurse should assess fundal consistency every _____ during first hour postpartum.", options: ["5 minutes", "15 minutes", "30 minutes", "1 hour"], ans: 1 },
+                { q: "Excessive postpartum bleeding is defined as:", options: [">100 mL", ">300 mL", ">500 mL (vaginal) or >1000 mL (cesarean)", ">1000 mL"], ans: 2 },
+                { q: "Which medication is first‑line for uterine atony?", options: ["Methylergonovine", "Oxytocin (Pitocin)", "Carboprost (Hemabate)", "Misoprostol"], ans: 1 },
+                { q: "Fundus should be located at the umbilicus approximately:", options: ["Immediately after delivery", "1 hour postpartum", "24 hours postpartum", "5 days postpartum"], ans: 1 },
+                { q: "Large clots or saturating a pad in <1 hour indicates:", options: ["Normal lochia", "Abnormal bleeding; report immediately", "Expected after C‑section", "Sign of infection"], ans: 1 },
+                { q: "Which action is contraindicated with a boggy uterus?", options: ["Massage fundus", "Administer oxytocin", "Apply firm pressure when uterus is not contracted (risk inversion)", "Empty bladder"], ans: 2 },
+                { q: "A patient reports gushing of blood and passing a clot the size of an egg. The nurse should first:", options: ["Notify provider", "Massage fundus and assess firmness", "Increase IV fluids", "Administer oxygen"], ans: 1 },
+                { q: "The nurse notes lochia rubra on day 6 postpartum. This is:", options: ["Normal", "Abnormal, may indicate subinvolution", "Sign of infection", "Always needs curettage"], ans: 1 }
+            ]},
+            bladder: { title: "Promote Bladder & Bowel Function", next: "infection", questions: [
+                { q: "The nurse should ensure the mother voids within how many hours after delivery?", options: ["2 hours", "4 hours", "6–8 hours", "12 hours"], ans: 2 },
+                { q: "A full bladder can lead to:", options: ["Uterine atony and hemorrhage", "Increased lochia", "Mastitis", "PPD"], ans: 0 },
+                { q: "First postpartum bowel movement typically occurs:", options: ["First day", "2–3 days", "1 week", "After discharge"], ans: 1 },
+                { q: "Which intervention helps prevent constipation?", options: ["Restrict fluids", "High‑fiber diet, stool softeners, ambulation", "Enema routinely", "Laxatives daily"], ans: 1 },
+                { q: "The nurse suspects urinary retention when:", options: ["Fundus is firm and midline", "Fundus is boggy and displaced upward", "Lochia is scant", "Mother reports no pain"], ans: 1 },
+                { q: "Stool softeners such as docusate are used to:", options: ["Stimulate bowel movement", "Prevent straining on episiotomy", "Treat diarrhea", "Increase appetite"], ans: 1 },
+                { q: "Which of the following is NOT a sign of bladder distension?", options: ["Suprapubic bulge", "Inability to void", "Fundus displaced to right", "Lochia alba"], ans: 3 },
+                { q: "Diuresis after delivery is most pronounced during:", options: ["First 24 hours", "2–5 days", "1 week", "2 weeks"], ans: 1 },
+                { q: "If a mother cannot void spontaneously, the nurse should first try:", options: ["Catheterization", "Running water, warm perineal irrigation, privacy", "Increase IV fluids", "Suprapubic pressure"], ans: 1 },
+                { q: "Postpartum bowel regimen includes all EXCEPT:", options: ["Hydration", "Fiber", "Stool softeners", "Routine laxatives for all"], ans: 3 }
+            ]},
+            infection: { title: "Prevent Infection", next: "comfort", questions: [
+                { q: "Perineal care should be performed:", options: ["Back to front", "Front to back", "Circular motion", "No specific direction"], ans: 1 },
+                { q: "Fever >100.4°F (38°C) after 24 hours postpartum may indicate:", options: ["Normal", "Endometritis, UTI, mastitis, wound infection", "Only dehydration", "Blood transfusion reaction"], ans: 1 },
+                { q: "REEDA scale is used to assess:", options: ["Uterine involution", "Perineal/episiotomy healing", "Breast engorgement", "Lochia color"], ans: 1 },
+                { q: "Which lochia characteristic suggests infection?", options: ["Rubra color day 2", "Foul odor", "Scant amount", "No clots"], ans: 1 },
+                { q: "Endometritis most commonly presents with:", options: ["Painless bleeding", "Fever, uterine tenderness, foul lochia", "No symptoms", "Hypertension"], ans: 1 },
+                { q: "Perineal pads should be changed:", options: ["Every 8 hours", "Every 2–4 hours and after each void/BM", "Once daily", "Only when saturated"], ans: 1 },
+                { q: "The nurse teaches the postpartum mother to use the peri‑bottle:", options: ["After each voiding and bowel movement", "Only in the morning", "Before each feeding", "At bedtime"], ans: 0 },
+                { q: "Mastitis is often caused by:", options: ["Staphylococcus aureus", "E. coli", "Group B strep", "Candida"], ans: 0 },
+                { q: "Which is a sign of C‑section incision infection?", options: ["Approximated edges", "Erythema, warmth, purulent drainage", "No drainage", "Painless"], ans: 1 },
+                { q: "Hand hygiene before touching perineal area is essential to prevent:", options: ["UTI", "Endometritis", "Maternal sepsis", "All of the above"], ans: 3 }
+            ]},
+            comfort: { title: "Promote Comfort & Pain Relief", next: "breastfeeding", questions: [
+                { q: "Afterpains are most common in:", options: ["Primiparas", "Multiparas", "C‑section patients", "Preterm deliveries"], ans: 1 },
+                { q: "Ice packs are most beneficial for perineal discomfort during the first:", options: ["4 hours", "24 hours", "48 hours", "1 week"], ans: 1 },
+                { q: "Sitz baths are typically started after:", options: ["Immediately postpartum", "First 24 hours", "Day 3", "After 1 week"], ans: 1 },
+                { q: "Breast engorgement is best managed by:", options: ["Withholding feeds", "Frequent breastfeeding, warm compresses before feeding", "Cold pack only", "Cessation of breastfeeding"], ans: 1 },
+                { q: "The drug of choice for afterpains is:", options: ["Morphine", "Ibuprofen", "Acetaminophen only", "Oxycodone"], ans: 1 },
+                { q: "Which non‑pharmacologic measure relieves perineal pain?", options: ["Kegel exercises", "Witch hazel pads (Tucks)", "Abdominal binder", "Supine position"], ans: 1 },
+                { q: "For C‑section pain, the nurse should encourage:", options: ["Bed rest for 72 hours", "Early ambulation and incentive spirometry", "Avoid analgesics", "Supine positioning"], ans: 1 },
+                { q: "Cabbage leaves applied to breasts may help with:", options: ["Mastitis", "Engorgement (traditional remedy)", "Sore nipples", "Insufficient milk"], ans: 1 },
+                { q: "A mother complains of severe perineal pain and a ‘bulging’ sensation. The nurse should assess for:", options: ["Hemorrhoids", "Perineal hematoma", "Normal healing", "Infection"], ans: 1 },
+                { q: "NSAIDs are preferred over narcotics postpartum because they:", options: ["Are stronger", "Less sedation and less constipation", "Cross into breast milk less", "Are safer for baby"], ans: 1 }
+            ]},
+            breastfeeding: { title: "Support Breastfeeding", next: "emotional", questions: [
+                { q: "The first breastfeeding should ideally occur:", options: ["Within 6 hours", "Within 1 hour after birth (skin‑to‑skin)", "After 12 hours", "After discharge"], ans: 1 },
+                { q: "Signs of effective latch include:", options: ["Painful, pinched sensation", "Flanged lips, wide mouth, areola visible above, audible swallowing", "Clicking sounds", "Nipple blanching"], ans: 1 },
+                { q: "Newborns should breastfeed at least how many times in 24 hours?", options: ["4–6", "8–12", "15–18", "20+"], ans: 1 },
+                { q: "Adequate milk intake is indicated by:", options: ["1–2 wet diapers/day", "6–8 wet diapers/day, 3–4 stools/day, weight gain", "Baby sleeps 6 hours straight", "No stool for 2 days"], ans: 1 },
+                { q: "Which maternal condition is a contraindication to breastfeeding?", options: ["Hepatitis B", "HIV in untreated mother", "Diabetes mellitus", "Hypertension"], ans: 1 },
+                { q: "Mastitis management includes:", options: ["Stop breastfeeding", "Continue breastfeeding, antibiotics, rest, fluids", "Apply cold packs only", "Increase formula supplements"], ans: 1 },
+                { q: "Sore nipples are most often due to:", options: ["Fungal infection", "Poor latch", "Mastitis", "Engorgement"], ans: 1 },
+                { q: "The nurse can assist a mother with breast engorgement by:", options: ["Teaching manual expression before latch", "Recommending tight bra", "Discouraging feeding", "Using ice before feeding"], ans: 0 },
+                { q: "Which medication is considered safe during breastfeeding for pain?", options: ["Ibuprofen, acetaminophen", "Codeine", "Aspirin", "Indomethacin"], ans: 0 },
+                { q: "The number of wet diapers indicating adequate hydration by day 4 is:", options: ["2–3", "4–5", "6–8", "10+"], ans: 2 }
+            ]},
+            emotional: { title: "Emotional & Psychological Support", next: "discharge", questions: [
+                { q: "The Edinburgh Postnatal Depression Scale is used to screen for:", options: ["Baby blues", "Postpartum depression", "Psychosis", "Anxiety"], ans: 1 },
+                { q: "Baby blues typically resolve within:", options: ["2–3 days", "2 weeks", "6 weeks", "3 months"], ans: 1 },
+                { q: "Which symptom suggests PPD rather than baby blues?", options: ["Tearfulness", "Anhedonia (loss of pleasure), persistent sadness >2 weeks", "Irritability", "Fatigue"], ans: 1 },
+                { q: "A mother says 'voices are telling me to hurt my baby.' This is most consistent with:", options: ["Baby blues", "PPD", "Postpartum psychosis", "Adjustment disorder"], ans: 2 },
+                { q: "The priority nursing action for a mother with command hallucinations is:", options: ["Reassure her it's normal", "Never leave alone with infant, obtain emergency psychiatric evaluation", "Give her a sedative", "Send her home with follow‑up"], ans: 1 },
+                { q: "Which of the following is a risk factor for PPD?", options: ["Strong support system", "Previous depression", "Planned pregnancy", "Male infant"], ans: 1 },
+                { q: "The EPDS cut‑off score for probable depression is:", options: ["≥5", "≥10", "≥15", "≥20"], ans: 1 },
+                { q: "Support groups for postpartum depression include:", options: ["PSI (Postpartum Support International)", "La Leche League", "Both", "None"], ans: 2 },
+                { q: "A mother with PPD who is suicidal requires:", options: ["Outpatient counseling", "Immediate hospitalization and safety plan", "Only medication", "Rest at home"], ans: 1 },
+                { q: "Postpartum psychosis is most strongly associated with:", options: ["Bipolar disorder", "Anxiety disorder", "Eating disorder", "OCD"], ans: 0 }
+            ]},
+            discharge: { title: "Discharge Teaching & Family Integration", next: "mnemonics", questions: [
+                { q: "Which of the following is a postpartum warning sign?", options: ["Fever >100.4°F", "Foul lochia", "Severe headache or visual changes", "All of the above"], ans: 3 },
+                { q: "Sexual intercourse is typically avoided for how long postpartum?", options: ["2 weeks", "6 weeks", "3 months", "Until bleeding stops"], ans: 1 },
+                { q: "Ovulation can occur as early as ____ in non‑lactating women.", options: ["3 weeks", "6 weeks", "8 weeks", "12 weeks"], ans: 0 },
+                { q: "Lactational amenorrhea method (LAM) is effective if:", options: ["Breastfeeding exclusively, amenorrheic, baby <6 months", "Supplementing with formula", "Using pacifier frequently", "Mother has regular periods"], ans: 0 },
+                { q: "A mother who had a C‑section should be advised to avoid lifting objects heavier than:", options: ["5 lb (2.3 kg)", "10–15 lb (4.5–6.8 kg)", "20 lb", "No restriction"], ans: 1 },
+                { q: "Newborn car seat safety: The infant should be placed:", options: ["Forward‑facing", "Rear‑facing in back seat", "In front seat with airbag on", "Without any restraint"], ans: 1 },
+                { q: "The postpartum visit is typically scheduled at:", options: ["1–2 weeks for high‑risk, 6 weeks for routine", "Only if complications", "3 months", "1 year"], ans: 0 },
+                { q: "Signs of postpartum infection to report include all EXCEPT:", options: ["Fever", "Foul lochia", "Uterine tenderness", "Lochia rubra on day 2"], ans: 3 },
+                { q: "A mother is discharged on day 2. She should be instructed to call if:", options: ["She feels tired", "She has a headache that does not improve with medication", "Her baby cries", "She has mild perineal pain"], ans: 1 },
+                { q: "Which method is NOT recommended for contraception while breastfeeding?", options: ["Condoms", "IUD", "Combined oral contraceptives (estrogen containing) before 6 weeks", "Progestin‑only pill"], ans: 2 }
+            ]},
+            mnemonics: { title: "Mnemonics & Summary", next: "final_quiz_sec", questions: [
+                { q: "The mnemonic 'BUBBLE-HE' stands for:", options: ["Breasts, Uterus, Bladder, Bowels, Lochia, Episiotomy, Homan's sign, Emotions", "Bleeding, Urine, Baby, Breathing, Legs, Homan's, Endocrine", "Bonding, Uterine, Baby, Lactation, Environment", "None"], ans: 0 },
+                { q: "REEDA is used for assessment of:", options: ["Fundus", "Perineum/episiotomy healing", "Breasts", "Lochia"], ans: 1 },
+                { q: "The 4 T's of postpartum hemorrhage include all EXCEPT:", options: ["Tone", "Tissue", "Trauma", "Toxemia"], ans: 3 },
+                { q: "Which mnemonic helps recall breastfeeding latch assessment?", options: ["C.H.O.S.E.", "BUBBLE", "REEDA", "VEAL CHOP"], ans: 0 },
+                { q: "The mnemonic 'P.A.S.S.' for discharge teaching includes:", options: ["Postpartum warning signs, Activity, Sexual intercourse, Support", "Pain, Assessment, Sutures, Sleep", "Placenta, Afterpains, Sitz bath, Supplements", "None"], ans: 0 },
+                { q: "In BUBBLE‑HE, the 'H' stands for:", options: ["Hemorrhage", "Homan's sign (DVT assessment)", "Heart", "Hematoma"], ans: 1 },
+                { q: "The REEDA acronym for perineal assessment includes:", options: ["Redness, Edema, Ecchymosis, Discharge, Approximation", "Rubra, Edema, Ecchymosis, Drainage, Assessment", "Range, Edema, Erythema, Drainage, Approximation", "None"], ans: 0 },
+                { q: "Which mnemonic is specific to postpartum hemorrhage causes?", options: ["4 T's", "5 P's", "VEAL CHOP", "BUBBLE-HE"], ans: 0 },
+                { q: "CHOSE in breastfeeding stands for:", options: ["Crying, Hunger, Oral, Sucking, Engorgement", "Comfort, Head alignment, Open mouth, Suckling, Effective swallowing", "Chest, Heart, Oxygen, Suck, Eat", "None"], ans: 1 },
+                { q: "The 7 essential objectives can be recalled by the mnemonic:", options: ["Bleeding, Bladder, Infection, Comfort, Breastfeeding, Emotions, Discharge", "All 7 start with P", "MAPLE", "HEADS"], ans: 0 }
+            ]}
+        };
+        // Build final 50-item exam
+        let finalQ = [];
+        for(let sec of ['overview','fundal','bladder','infection','comfort','breastfeeding','emotional','discharge','mnemonics']) {
+            finalQ.push(...quizzes[sec].questions.slice(0,5));
+        }
+        while(finalQ.length < 50) finalQ.push({ q: "What is the most critical nursing action to prevent postpartum hemorrhage?", options: ["Frequent fundal massage and assessment", "Administer antibiotics", "Encourage formula feeding", "Promote early discharge"], ans: 0 });
+        quizzes.final_quiz = { title: "Final 50‑Item Exam: Puerperium Nursing Care", next: null, questions: finalQ };
+
+        let currentQuiz = null;
+
+        function unlockFirstSection() { if(!unlockedSections.includes('overview')) { unlockedSections.push('overview'); updateSidebarUI(); } showSection('overview'); }
+        function showSection(sectionId) {
+            if (!unlockedSections.includes(sectionId) && sectionId !== 'home') { alert("Complete the Active Recall Quiz at the bottom of the previous section to unlock."); return; }
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId)?.classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-puerperium-light','text-puerperium-dark','border-r-4','border-puerperium-dark'));
+            const activeBtn = document.getElementById('btn-'+sectionId);
+            if(activeBtn) activeBtn.classList.add('bg-puerperium-light','text-puerperium-dark','border-r-4','border-puerperium-dark');
+            if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
+        }
+        function updateSidebarUI() {
+            const sections = ['home','overview','fundal','bladder','infection','comfort','breastfeeding','emotional','discharge','mnemonics','final_quiz_sec'];
+            sections.forEach(sec => {
+                const btn = document.getElementById('btn-'+sec);
+                if(!btn) return;
+                const lock = btn.querySelector('.fa-lock'), icon = btn.querySelector('.nav-icon');
+                if(unlockedSections.includes(sec) || sec==='home') { btn.classList.remove('locked-section'); if(lock) lock.classList.add('hidden'); if(icon) icon.classList.remove('hidden'); }
+                else { btn.classList.add('locked-section'); if(lock) lock.classList.remove('hidden'); if(icon) icon.classList.add('hidden'); }
+            });
+        }
+        function openQuiz(sectionId) { currentQuiz = sectionId; const qd = quizzes[sectionId]; if(!qd) return; document.getElementById('quiz-title').innerHTML = qd.title; const container = document.getElementById('quiz-questions-container'); container.innerHTML = ''; qd.questions.forEach((q, idx) => { let html = `<div class="bg-slate-50 p-4 rounded-xl mb-4"><p class="font-bold mb-3">${idx+1}. ${q.q}</p><div class="space-y-2">`; q.options.forEach((opt,oi) => { html += `<label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer"><input type="radio" name="q${idx}" value="${oi}" class="form-radio text-puerperium"><span>${opt}</span></label>`; }); html += `</div><div class="feedback-${idx} text-sm mt-2 hidden"></div></div>`; container.innerHTML += html; }); document.getElementById('quiz-submit-btn').classList.remove('hidden'); document.getElementById('quiz-result-container').classList.add('hidden'); document.getElementById('quiz-modal').classList.remove('hidden'); }
+        function closeQuiz() { document.getElementById('quiz-modal').classList.add('hidden'); }
+        function submitQuiz() {
+            const qd = quizzes[currentQuiz];
+            if(!qd) return;
+            let score = 0;
+            for(let i=0; i<qd.questions.length; i++) {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                if(sel && parseInt(sel.value)===qd.questions[i].ans) score++;
+                const fbDiv = document.querySelector(`.feedback-${i}`);
+                if(fbDiv){
+                    fbDiv.classList.remove('hidden');
+                    const correctTxt = qd.questions[i].options[qd.questions[i].ans];
+                    if(sel && parseInt(sel.value)===qd.questions[i].ans) { fbDiv.innerHTML='<span class="text-green-700">✓ Correct</span>'; fbDiv.parentElement?.classList.add('quiz-feedback-correct'); }
+                    else { const selectedTxt = sel? qd.questions[i].options[parseInt(sel.value)]:"No answer"; fbDiv.innerHTML=`<span class="text-red-700">✗ Incorrect. Correct: ${correctTxt}. You answered: ${selectedTxt}</span>`; fbDiv.parentElement?.classList.add('quiz-feedback-wrong'); }
+                }
+            }
+            let percent = (score/qd.questions.length)*100;
+            let resultDiv = document.getElementById('quiz-result-container');
+            document.getElementById('quiz-submit-btn').classList.add('hidden');
+            resultDiv.classList.remove('hidden');
+            if(percent>=75){
+                if(currentQuiz==='final_quiz'){ resultDiv.innerHTML=`<div class="text-green-600 text-4xl text-center">🎉 Excellent! Score ${score}/${qd.questions.length} (${percent}%)<br>You mastered Puerperium Nursing Care</div><button onclick="closeQuiz()" class="mt-4 bg-puerperium text-white px-6 py-2 rounded-xl">Close</button>`; return; }
+                if(quizzes[currentQuiz].next && !unlockedSections.includes(quizzes[currentQuiz].next)) unlockedSections.push(quizzes[currentQuiz].next);
+                if(quizzes[currentQuiz].next === 'mnemonics' && !unlockedSections.includes('final_quiz_sec')) unlockedSections.push('final_quiz_sec');
+                updateSidebarUI();
+                resultDiv.innerHTML=`<div class="text-green-600 text-3xl text-center">✅ Passed! (${score}/${qd.questions.length})</div><button onclick="closeQuiz(); showSection('${quizzes[currentQuiz].next}')" class="mt-4 bg-green-600 text-white px-6 py-2 rounded-xl">Unlock Next Section</button>`;
+            } else { resultDiv.innerHTML=`<div class="text-red-600 text-3xl text-center">❌ Failed: ${score}/${qd.questions.length} (${percent}%)<br>Need 75%</div><button onclick="openQuiz('${currentQuiz}')" class="mt-4 bg-slate-600 text-white px-6 py-2 rounded-xl">Try Again</button>`; }
+        }
+        function toggleRecallMode() { const active = !document.body.classList.contains('recall-mode'); const toggle=document.getElementById('recall-toggle'),knob=document.getElementById('recall-knob'); if(active){ document.body.classList.add('recall-mode'); toggle.classList.add('bg-puerperium-dark'); knob.classList.add('translate-x-6'); } else { document.body.classList.remove('recall-mode'); toggle.classList.remove('bg-puerperium-dark'); knob.classList.remove('translate-x-6'); } }
+        function toggleMobileMenu() { const s=document.getElementById('sidebar'); if(s.classList.contains('hidden')) s.classList.remove('hidden','flex','absolute','h-full','z-50'); else s.classList.add('hidden'); }
+        document.addEventListener('DOMContentLoaded', () => { updateSidebarUI(); document.querySelectorAll('.reveal-text').forEach(el => el.addEventListener('click', function(){ if(document.body.classList.contains('recall-mode')) this.classList.toggle('revealed'); })); });
+    </script>
+</body>
+</html>
